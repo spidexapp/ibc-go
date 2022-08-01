@@ -1002,6 +1002,98 @@ func (suite *FeeTestSuite) TestOnTimeoutPacket() {
 	}
 }
 
+func (suite *FeeTestSuite) TestOnChanUpgradeInit() {
+	testCases := []struct {
+		name     string
+		malleate func()
+		expPass  bool
+	}{
+		{
+			"success",
+			func() {},
+			true,
+		},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+
+		suite.Run(tc.name, func() {
+			// reset suite
+			suite.SetupTest()
+
+			suite.path.EndpointA.ChannelConfig.Version = ibcmock.Version
+			suite.path.EndpointB.ChannelConfig.Version = ibcmock.Version
+
+			// setup connections
+			suite.coordinator.SetupConnections(suite.path)
+
+			// create non-incentivized mock channel
+			suite.coordinator.CreateChannels(suite.path)
+
+			// setup default mock callback
+			suite.chainA.GetSimApp().FeeMockModule.IBCApp.OnChanUpgradeInit = func(
+				ctx sdk.Context,
+				order channeltypes.Order,
+				connectionHops []string,
+				portID, channelID string,
+				sequence uint64,
+				counterparty channeltypes.Counterparty,
+				version, previousVersion string,
+			) (string, error) {
+				if version != ibcmock.Version {
+					return "", fmt.Errorf("incorrect mock version")
+				}
+				return ibcmock.Version, nil
+			}
+
+			tc.malleate()
+
+			module, _, err := suite.chainA.App.GetIBCKeeper().PortKeeper.LookupModuleByPort(suite.chainA.GetContext(), suite.path.EndpointA.ChannelConfig.PortID)
+			suite.Require().NoError(err)
+
+			cbs, ok := suite.chainA.App.GetIBCKeeper().Router.GetRoute(module)
+			suite.Require().True(ok)
+
+			isFeeEnabled := suite.chainA.GetSimApp().IBCFeeKeeper.IsFeeEnabled(suite.chainA.GetContext(), suite.path.EndpointA.ChannelConfig.PortID, suite.path.EndpointA.ChannelID)
+			suite.Require().False(isFeeEnabled, tc.name)
+
+			counterparty := channeltypes.NewCounterparty(ibctesting.MockFeePort, ibctesting.FirstChannelID)
+			metadata := types.Metadata{
+				FeeVersion: types.Version,
+				AppVersion: ibcmock.Version,
+			}
+
+			versionBz, err := suite.chainA.Codec.Marshal(&metadata)
+			suite.Require().NoError(err)
+
+			// TODO: the upgrade cb stack is not wired to pass to apps yet
+			// issue: https://github.com/cosmos/ibc-go/issues/1618
+			version, err := cbs.OnChanUpgradeInit(
+				suite.chainA.GetContext(),
+				suite.path.EndpointA.ChannelConfig.Order,
+				suite.path.EndpointA.GetChannel().ConnectionHops,
+				suite.path.EndpointA.ChannelConfig.PortID,
+				suite.path.EndpointA.ChannelID,
+				1,
+				counterparty,
+				string(versionBz),
+				suite.path.EndpointA.ChannelConfig.Version,
+			)
+
+			if tc.expPass {
+				suite.Require().NoError(err)
+				suite.Require().Equal(string(versionBz), version, tc.name)
+
+				isFeeEnabled := suite.chainA.GetSimApp().IBCFeeKeeper.IsFeeEnabled(suite.chainA.GetContext(), suite.path.EndpointA.ChannelConfig.PortID, suite.path.EndpointA.ChannelID)
+				suite.Require().True(isFeeEnabled, tc.name)
+			} else {
+				suite.Require().Error(err)
+			}
+		})
+	}
+}
+
 func (suite *FeeTestSuite) TestGetAppVersion() {
 	var (
 		portID        string
