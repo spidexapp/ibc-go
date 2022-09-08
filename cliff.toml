@@ -50,8 +50,8 @@ commit_parsers = [
     { message = "^test", group = "Testing"},
     { message = "^chore\\(release\\): prepare for", skip = true},
     { message = "^chore", group = "Miscellaneous Tasks"},
+    { message = "^api-breaking", group = "API Breaking"},
     { body = ".*security", group = "Security"},
-    { body = "^api-breaking", group = "API Breaking"},
 ]
 # filter out the commits that are not matched by commit parsers
 filter_commits = false
