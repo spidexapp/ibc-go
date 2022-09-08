@@ -209,6 +209,10 @@ view-docs:
 		@cd docs && \
     npm install && npm run serve
 
+
+release-notes:
+	git-cliff --unreleased --tag=$(tag)
+
 .PHONY: build-docs
 
 ###############################################################################
