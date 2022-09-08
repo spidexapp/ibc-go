@@ -49,7 +49,7 @@ commit_parsers = [
     { message = "^feat", group = "Features"},
     { message = "^(fix|bug)", group = "Bug Fixes"},
     { message = "^doc", group = "Documentation"},
-    { message = "^(test|e2e)", group = "Testing"},
+    { message = "^((?i)test|(?i)e2e)", group = "Testing"},
     { message = "^chore", group = "Miscellaneous Tasks"},
 ]
 # filter out the commits that are not matched by commit parsers
