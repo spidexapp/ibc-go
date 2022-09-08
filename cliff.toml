@@ -17,7 +17,7 @@ body = """
 {% for group, commits in commits | group_by(attribute="group") %}
     ### {{ group | upper_first }}
     {% for commit in commits %}
-        - {% if commit.breaking %}[**breaking**] {% endif %}{{ commit.message | upper_first }}\
+        * {{ commit.message | upper_first }}\
     {% endfor %}
 {% endfor %}\n
 """
@@ -38,20 +38,19 @@ split_commits = false
 # regex for preprocessing the commit messages
 commit_preprocessors = [
     { pattern = '\((\w+\s)?#([0-9]+)\)', replace = "([#${2}](https://github.com/cosmos/ibc-go/issues/${2}))"},
+    { pattern = '\(pr-([0-9]+)\)', replace = "([#${1}](https://github.com/cosmos/ibc-go/pulls/${1}))"},
 ]
 # regex for parsing and grouping commits
 commit_parsers = [
-    { message = "^feat", group = "Features"},
-    { message = "^fix", group = "Bug Fixes"},
-    { message = "^doc", group = "Documentation"},
-    { message = "^perf", group = "Performance"},
-    { message = "^refactor", group = "Refactor"},
-    { message = "^style", group = "Styling"},
-    { message = "^test", group = "Testing"},
-    { message = "^chore\\(release\\): prepare for", skip = true},
-    { message = "^chore", group = "Miscellaneous Tasks"},
+    { message = "^deps", group = "Dependencies"},
     { message = "^api-breaking", group = "API Breaking"},
-    { body = ".*security", group = "Security"},
+    { message = "^state-machine-breaking", group = "State Machine Breaking"},
+    { message = "^improvements", group = "Improvements"},
+    { message = "^feat", group = "Features"},
+    { message = "^(fix|bug)", group = "Bug Fixes"},
+    { message = "^doc", group = "Documentation"},
+    { message = "^(test|e2e)", group = "Testing"},
+    { message = "^chore", group = "Miscellaneous Tasks"},
 ]
 # filter out the commits that are not matched by commit parsers
 filter_commits = false
