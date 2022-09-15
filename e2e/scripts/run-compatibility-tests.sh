@@ -14,6 +14,7 @@ function run_gh_workflow(){
 
         # manually trigger a workflow using each entry from the list
         gh workflow run "e2e-manual-${chain_binary}.yaml" --ref="${current_branch}" \
+        #   -f chain-image="damiannolan/${chain_binary}"
           -f chain-a-tag="${chain_a_tag}" \
           -f chain-b-tag="${chain_b_tag}" \
           -f test-entry-point="${test_entry_point}" > /dev/null
