@@ -4,20 +4,28 @@
     "chain-binary": "icad",
     "tests": [
       {
-        "chain-a-tag": "v0.3.3",
-        "chain-b-tag": "v0.1.4"
+        "chain-a-tag": "v5.0.0-sa",
+        "chain-b-tag": "v3.3.0-sa"
       },
       {
-        "chain-a-tag": "v0.1.4",
-        "chain-b-tag": "v0.3.3"
+        "chain-a-tag": "v3.3.0-sa",
+        "chain-b-tag": "v5.0.0-sa"
       },
       {
-        "chain-a-tag": "v0.2.3",
-        "chain-b-tag": "v0.3.3"
+        "chain-a-tag": "v4.1.0-sa",
+        "chain-b-tag": "v5.0.0-sa"
       },
       {
-        "chain-a-tag": "v0.3.3",
-        "chain-b-tag": "v0.2.3"
+        "chain-a-tag": "v5.0.0-sa",
+        "chain-b-tag": "v4.1.0-sa"
+      },
+      {
+        "chain-a-tag": "v4.1.0-sa",
+        "chain-b-tag": "v3.3.0-sa"
+      },
+      {
+        "chain-a-tag": "v3.3.0-sa",
+        "chain-b-tag": "v4.1.0-sa"
       }
     ]
   }
