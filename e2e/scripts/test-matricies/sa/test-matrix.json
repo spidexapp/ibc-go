@@ -1,5 +1,81 @@
 [
   {
+    "test-entry-point": "TestTransferTestSuite",
+    "chain-binary": "simd",
+    "tests": [
+      {
+        "chain-a-tag": "v5.0.0-sa",
+        "chain-b-tag": "v3.3.0-sa"
+      },
+      {
+        "chain-a-tag": "v3.3.0-sa",
+        "chain-b-tag": "v5.0.0-sa"
+      },
+      {
+        "chain-a-tag": "v4.1.0-sa",
+        "chain-b-tag": "v3.3.0-sa"
+      },
+      {
+        "chain-a-tag": "v3.3.0-sa",
+        "chain-b-tag": "v4.1.0-sa"
+      },
+      {
+        "chain-a-tag": "v4.1.0-sa",
+        "chain-b-tag": "v5.0.0-sa"
+      },
+      {
+        "chain-a-tag": "v5.0.0-sa",
+        "chain-b-tag": "v4.1.0-sa"
+      },
+      {
+        "chain-a-tag": "v6.0.0-sa",
+        "chain-b-tag": "v5.0.0-sa"
+      },
+      {
+        "chain-a-tag": "v6.0.0-sa",
+        "chain-b-tag": "v4.1.0-sa"
+      },
+      {
+        "chain-a-tag": "v5.0.0-sa",
+        "chain-b-tag": "v6.0.0-sa"
+      },
+      {
+        "chain-a-tag": "v4.1.0-sa",
+        "chain-b-tag": "v6.0.0-sa"
+      }
+    ]
+  },
+  {
+    "test-entry-point": "TestIncentivizedTransferTestSuite",
+    "chain-binary": "simd",
+    "tests": [
+      {
+        "chain-a-tag": "v4.1.0-sa",
+        "chain-b-tag": "v5.0.0-sa"
+      },
+      {
+        "chain-a-tag": "v5.0.0-sa",
+        "chain-b-tag": "v4.1.0-sa"
+      },
+      {
+        "chain-a-tag": "v6.0.0-sa",
+        "chain-b-tag": "v5.0.0-sa"
+      },
+      {
+        "chain-a-tag": "v6.0.0-sa",
+        "chain-b-tag": "v4.1.0-sa"
+      },
+      {
+        "chain-a-tag": "v5.0.0-sa",
+        "chain-b-tag": "v6.0.0-sa"
+      },
+      {
+        "chain-a-tag": "v4.1.0-sa",
+        "chain-b-tag": "v6.0.0-sa"
+      }
+    ]
+  },
+  {
     "test-entry-point": "TestInterchainAccountsTestSuite",
     "chain-binary": "icad",
     "tests": [
@@ -26,6 +102,52 @@
       {
         "chain-a-tag": "v3.3.0-sa",
         "chain-b-tag": "v4.1.0-sa"
+      },
+      {
+        "chain-a-tag": "v6.0.0-sa",
+        "chain-b-tag": "v5.0.0-sa"
+      },
+      {
+        "chain-a-tag": "v6.0.0-sa",
+        "chain-b-tag": "v4.1.0-sa"
+      },
+      {
+        "chain-a-tag": "v5.0.0-sa",
+        "chain-b-tag": "v6.0.0-sa"
+      },
+      {
+        "chain-a-tag": "v4.1.0-sa",
+        "chain-b-tag": "v6.0.0-sa"
+      }
+    ]
+  },
+  {
+    "test-entry-point": "TestIncentivizedInterchainAccountsTestSuite",
+    "chain-binary": "icad",
+    "tests": [
+      {
+        "chain-a-tag": "v4.1.0-sa",
+        "chain-b-tag": "v5.0.0-sa"
+      },
+      {
+        "chain-a-tag": "v5.0.0-sa",
+        "chain-b-tag": "v4.1.0-sa"
+      },
+      {
+        "chain-a-tag": "v6.0.0-sa",
+        "chain-b-tag": "v5.0.0-sa"
+      },
+      {
+        "chain-a-tag": "v6.0.0-sa",
+        "chain-b-tag": "v4.1.0-sa"
+      },
+      {
+        "chain-a-tag": "v5.0.0-sa",
+        "chain-b-tag": "v6.0.0-sa"
+      },
+      {
+        "chain-a-tag": "v4.1.0-sa",
+        "chain-b-tag": "v6.0.0-sa"
       }
     ]
   }
