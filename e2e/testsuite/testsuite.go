@@ -434,7 +434,7 @@ func GetNativeChainBalance(ctx context.Context, chain ibc.Chain, user *ibc.Walle
 }
 
 // ExecuteGovProposal submits the given governance proposal using the provided user and uses all validators to vote yes on the proposal.
-// It ensure the proposal successfully passes.
+// It ensures the proposal successfully passes.
 func (s *E2ETestSuite) ExecuteGovProposal(ctx context.Context, chain *cosmos.CosmosChain, user *ibc.Wallet, content govtypes.Content) {
 	sender, err := sdk.AccAddressFromBech32(user.Bech32Address(chain.Config().Bech32Prefix))
 	s.Require().NoError(err)
