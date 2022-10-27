@@ -27,6 +27,7 @@ type Keeper struct {
 	authKeeper    types.AccountKeeper
 	bankKeeper    types.BankKeeper
 	scopedKeeper  capabilitykeeper.ScopedKeeper
+	hooks         types.IbcTransferHooks
 }
 
 // NewKeeper creates a new IBC transfer Keeper instance
@@ -149,4 +150,23 @@ func (k Keeper) AuthenticateCapability(ctx sdk.Context, cap *capabilitytypes.Cap
 // passes to it
 func (k Keeper) ClaimCapability(ctx sdk.Context, cap *capabilitytypes.Capability, name string) error {
 	return k.scopedKeeper.ClaimCapability(ctx, cap, name)
+}
+
+// SetHooks sets the hooks for the IBCTransfer module
+// It should be called only once during initialization, it panic if called more than once.
+func (k *Keeper) SetHooks(ith types.IbcTransferHooks) *Keeper {
+	if k.hooks != nil {
+		panic("cannot set ibc hooks twice")
+	}
+
+	k.hooks = ith
+	return k
+}
+
+// AfterRecvPacket delegate the call to the hooks. If no hook has been registered, this function returns with a `nil` error
+func (k *Keeper) AfterRecvPacket(ctx sdk.Context, receiver sdk.AccAddress, coin sdk.Coin) error {
+	if k.hooks == nil {
+		return nil
+	}
+	return k.hooks.AfterRecvPacket(ctx, receiver, coin)
 }

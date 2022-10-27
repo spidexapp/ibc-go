@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	metrics "github.com/armon/go-metrics"
+	"github.com/armon/go-metrics"
 	"github.com/cosmos/cosmos-sdk/telemetry"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -258,6 +258,12 @@ func (k Keeper) OnRecvPacket(ctx sdk.Context, packet channeltypes.Packet, data t
 			return sdkerrors.Wrap(err, "unable to unescrow tokens, this may be caused by a malicious counterparty module or a bug: please open an issue on counterparty module")
 		}
 
+		// Only call hooks if tx executed successfully.
+		if err = k.AfterRecvPacket(ctx, receiver, token); err != nil {
+			// If hooks return error, only revert hooks.
+			k.Logger(ctx).Info("ibc transfer hooks failed", "error", err)
+		}
+
 		defer func() {
 			if transferAmount.IsInt64() {
 				telemetry.SetGaugeWithLabels(
@@ -316,6 +322,12 @@ func (k Keeper) OnRecvPacket(ctx sdk.Context, packet channeltypes.Packet, data t
 		ctx, types.ModuleName, receiver, sdk.NewCoins(voucher),
 	); err != nil {
 		return err
+	}
+
+	// Only call hooks if tx executed successfully.
+	if err = k.AfterRecvPacket(ctx, receiver, voucher); err != nil {
+		// If hooks return error, only revert hooks.
+		k.Logger(ctx).Info("ibc transfer hooks failed", "error", err)
 	}
 
 	defer func() {

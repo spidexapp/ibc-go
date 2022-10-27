@@ -51,3 +51,8 @@ type ConnectionKeeper interface {
 type PortKeeper interface {
 	BindPort(ctx sdk.Context, portID string) *capabilitytypes.Capability
 }
+
+// IbcTransferHooks event hooks for ibcTransfer
+type IbcTransferHooks interface {
+	AfterRecvPacket(ctx sdk.Context, receiver sdk.AccAddress, coin sdk.Coin) error
+}
